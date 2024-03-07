@@ -79,6 +79,7 @@ def main():
         torch.backends.cudnn.benchmark = True
 
     trackers = {n: AverageTracker() for n in ["loss", "loss_id", "loss_fd"]}
+    os.makedirs('out', exist_ok=True)
     with tqdm.trange(2000) as epoch_bar:
         for epoch in epoch_bar:
             net.train()
@@ -109,6 +110,8 @@ def main():
             if (epoch == 0) or (((epoch + 1) % 100) == 0):
                 acc, nmi, ari = check_clustering_metrics(npc, train_loader)
                 print("Epoch:{} Kmeans ACC, NMI, ARI = {}, {}, {}".format(epoch+1, acc, nmi, ari))
+            torch.save(net.cpu().state_dict(), f'out/{epoch}.pt')
+            net = net.to(device)
 
 
 class AverageTracker():
