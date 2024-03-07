@@ -42,7 +42,7 @@ def main():
     ]
     transform = transforms.Compose(tf)
 
-    trainset = CIFAR10(root="~/.datasets",
+    trainset = CIFAR10(root="./.datasets",
                        train=True,
                        download=True,
                        transform=transform)
